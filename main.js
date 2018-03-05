@@ -1,9 +1,11 @@
 
 var dataArray = []
+dataArray[0] = 2
+dataArray[1] = 2
 var charArray = []
 var now = 0
 
-const string = '++++++ [ > ++++++++++ < - ] > +++++ .'
+const string = '[ > [ >+ >+ << -] >> [- << + >>] <<< -] >>.'
 charArray = string.split('')
 
 const moveLeft = () => { now = now - 1 < 0 ? 0 : now - 1 }
@@ -23,10 +25,9 @@ const decrement = () => {
   }
 }
 const findLoopEnd = (beg) => {
+  let haveIn = 0
   for (let charId = beg + 1; charId < charArray.length; charId++) {
     let char = charArray[charId]
-    let haveIn = 0
-
     if (char === '[') {
       haveIn++
     } else if (char === ']') {
@@ -47,7 +48,7 @@ const loop = (charId) => {
       doIt(charArray[count], count)
     }
   }
-  return end
+  return end + 1
 }
 const print = () => { console.log(String.fromCharCode(dataArray[now])) }
 
