@@ -8,11 +8,15 @@ void moveLeft (int *** now) {
   **now = **now - 1;
 }
 
+void loop (int *** now) {
+
+}
+
 void increment (int ** now){
   **now = **now + 1;
 }
 
-void decrement(int ** now) {
+void decrement (int ** now) {
   **now = **now - 1;
 }
 
