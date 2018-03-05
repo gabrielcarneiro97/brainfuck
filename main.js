@@ -1,7 +1,5 @@
 
 var dataArray = []
-dataArray[0] = 2
-dataArray[1] = 2
 var charArray = []
 var now = 0
 
