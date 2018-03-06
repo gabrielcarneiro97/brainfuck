@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-
-#define DATA_LENGHT 30000
-#define CHAR_LENGHT 10000
+#include <stdlib.h>
 
 typedef struct s {
-  char charArray[CHAR_LENGHT];
-  int dataArray[DATA_LENGHT];
+  char * charArray;
+  int dataArray[30000];
   int now;
 } bf;
 
@@ -54,12 +52,11 @@ bf read (bf data) {
 sbf loop (sbf s) {
   int beg = s.index;
   int end = 0;
-  bf data = s.data;
 
   int hasIn = 0;
   int i;
-  for (i = beg + 1; i < CHAR_LENGHT; i++) {
-    char ch = data.charArray[i];
+  for (i = beg + 1; i < strlen(s.data.charArray); i++) {
+    char ch = s.data.charArray[i];
 
     if (ch == '[') {
       hasIn += 1;
@@ -73,14 +70,17 @@ sbf loop (sbf s) {
     }
   }
 
-  while (data.dataArray[data.now] > 0) {
+  while (s.data.dataArray[s.data.now] > 0) {
     int i2;
     for (i2 = beg + 1; i2 < end; i2++) {
-      char ch = data.charArray[i2];
-      i2 = doIt(ch, i2, s).index;
+      char ch = s.data.charArray[i2];
+      
+      s = doIt(ch, i2, s);
+      i2 = s.index;
     }
   }
 
+  s.index = end;
   return s;
 }
 
@@ -88,22 +88,28 @@ sbf doIt (char ch, int index, sbf s) {
   switch (ch) {
       case '+':
         s.data = increment(s.data);
+        s.index = index;
         return s;
       case '-':
         s.data = decrement(s.data);
+        s.index = index;
         return s;
       case '>':
         s.data = moveRight(s.data);
+        s.index = index;
         return s;
       case '<':
         s.data = moveLeft(s.data);
+        s.index = index;
         return s;
       case '.':
         s.data = print(s.data);
+        s.index = index;
         return s;
       case '[':
         return loop(s);
       default:
+        s.index = index;
         return s;
     }
 }
@@ -113,18 +119,24 @@ void brainfuck (char * string) {
   int i;
   sbf s;
 
+  s.data.charArray = (char *) malloc(strlen(string));
+
   strcpy(s.data.charArray, string);
 
   printf("%s", s.data.charArray);
+  
 
-  for (i = 0; i < CHAR_LENGHT; i++) {
-    char ch = string[i];
+  for (i = 0; i < strlen(string); i++) {
+    char ch = s.data.charArray[i];
 
-    i = doIt(ch, i, s).index;
+    s = doIt(ch, i, s);
+    i = s.index;
+
   }
 }
 
 int main (int argc, char *argv[]) {
-  char * string = "++++++++[ > ++++[ > ++ > +++ > +++ > + < < < < -] > + > + >->> +[ < ] < -] >>.> ---.+++++++..+++.>>.<-.<.+++.------.--------.>> +.> ++.";
-  printf("%s\n", string);
+  char string[] = "+++[>++++<-]>.";
+
+  brainfuck(string);
 }
