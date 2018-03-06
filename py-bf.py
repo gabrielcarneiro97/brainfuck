@@ -14,12 +14,14 @@ class Brainfuck:
   
   def moveRight (self):
     self.now += 1
+
   def moveLeft (self):
     if self.now > 0:
       self.now -= 1
   
   def increment (self):
     self.dataArray[self.now] += 1
+
   def decrement (self):
     if self.dataArray[self.now] - 1 > 0:
       self.dataArray[self.now] -= 1
@@ -29,6 +31,7 @@ class Brainfuck:
   def print (self):
     data = chr(self.dataArray[self.now])
     print(data, end='')
+
   def read (self):
     self.dataArray[self.now] = ord(input())
   
@@ -48,6 +51,7 @@ class Brainfuck:
           break
         else:
           hasIn -= 1
+
     while self.dataArray[self.now] > 0:
       big = -1
       for element in enumerate(self.string[beg + 1 : end]):
@@ -81,7 +85,6 @@ class Brainfuck:
       return self.loop(index)
     else:
       return 0
-
 
 b = Brainfuck('++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.')
 

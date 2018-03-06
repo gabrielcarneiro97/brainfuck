@@ -75,7 +75,7 @@ int main (int argc, char *argv[]) {
 
   int * now = dataArray;
 
-  int charId; 
+  int charId;
   for (charId = 0; charId < stringLength; charId++) {
     char ch = string[charId];
     printf("%d\n", *now);

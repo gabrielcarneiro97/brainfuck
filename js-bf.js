@@ -1,80 +1,90 @@
+class Brainfuck {
+  constructor (string) {
+    this.dataArray = new Array(30000).fill(0)
+    this.charArray = string.split('')
+    this.now = 0
 
-var dataArray = []
-var charArray = []
-var now = 0
-
-const string = '[ > [ >+ >+ << -] >> [- << + >>] <<< -] >>.'
-charArray = string.split('')
-
-const moveLeft = () => { now = now - 1 < 0 ? 0 : now - 1 }
-const moveRight = () => { now++ }
-const increment = () => {
-  if (isNaN(dataArray[now])) {
-    dataArray[now] = 1
-  } else {
-    dataArray[now]++
+    for (let i = 0; i < this.charArray.length; i++) {
+      let char = this.charArray[i]
+      i = this.do(char, i)
+    }
   }
-}
-const decrement = () => {
-  if (isNaN(dataArray[now])) {
-    dataArray[now] = 1
-  } else {
-    dataArray[now]--
+
+  moveRight () {
+    this.now += 1
   }
-}
-const findLoopEnd = (beg) => {
-  let haveIn = 0
-  for (let charId = beg + 1; charId < charArray.length; charId++) {
-    let char = charArray[charId]
-    if (char === '[') {
-      haveIn++
-    } else if (char === ']') {
-      if (haveIn !== 0) {
-        haveIn--
-      } else {
-        return charId
+  moveLeft () {
+    if (this.now > 0) {
+      this.now -= 1
+    }
+  }
+
+  increment () {
+    this.dataArray[this.now] += 1
+  }
+  decrement () {
+    if (this.dataArray[this.now] > 0) {
+      this.dataArray[this.now] -= 1
+    }
+  }
+
+  print () {
+    process.stdout.write(String.fromCharCode(this.dataArray[this.now]))
+  }
+  read () {
+
+  }
+
+  loop (beg) {
+    let end = 0
+
+    let hasIn = 0
+    for (let i = beg + 1; i < this.charArray.length; i++) {
+      let char = this.charArray[i]
+
+      if (char === '[') {
+        hasIn += 1
+      } else if (char === ']') {
+        if (hasIn === 0) {
+          end = i
+          break
+        } else {
+          hasIn -= 1
+        }
       }
     }
+    while (this.dataArray[this.now] > 0) {
+      for (let i = beg + 1; i < end; i++) {
+        let char = this.charArray[i]
+        i = this.do(char, i)
+      }
+    }
+    return end
   }
-}
-const loop = (charId) => {
-  let counterId = now
-  let beg = charId
-  let end = findLoopEnd(beg)
-  while (dataArray[counterId] !== 0) {
-    for (let count = beg + 1; count < end; count++) {
-      doIt(charArray[count], count)
+
+  do (char, index) {
+    switch (char) {
+      case '+':
+        this.increment()
+        return index
+      case '-':
+        this.decrement()
+        return index
+      case '>':
+        this.moveRight()
+        return index
+      case '<':
+        this.moveLeft()
+        return index
+      case '.':
+        this.print()
+        return index
+      case '[':
+        return this.loop(index)
+      default:
+        return index
     }
   }
-  return end + 1
-}
-const print = () => { console.log(String.fromCharCode(dataArray[now])) }
-
-const doIt = (char, charId) => {
-  switch (char) {
-    case '+':
-      increment()
-      return charId
-    case '-':
-      decrement()
-      return charId
-    case '>':
-      moveRight()
-      return charId
-    case '<':
-      moveLeft()
-      return charId
-    case '.':
-      print()
-      return charId
-    case '[':
-      return loop(charId)
-    default:
-      return charId
-  }
 }
 
-for (let charId = 0; charId < charArray.length; charId++) {
-  let char = charArray[charId]
-  charId = doIt(char, charId)
-}
+let b = new Brainfuck('++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.')
