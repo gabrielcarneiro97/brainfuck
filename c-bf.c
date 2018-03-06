@@ -1,84 +1,130 @@
 #include <stdio.h>
+#include <string.h>
 
-int * moveRight(int *now) {
-  now = now + 1;
-  return now;
+#define DATA_LENGHT 30000
+#define CHAR_LENGHT 10000
+
+typedef struct s {
+  char charArray[CHAR_LENGHT];
+  int dataArray[DATA_LENGHT];
+  int now;
+} bf;
+
+typedef struct s1 {
+  bf data;
+  int index;
+} sbf;
+
+sbf doIt (char ch, int index, sbf s);
+
+bf moveRight (bf data) {
+  data.now += 1;
+  return data;
+}
+bf moveLeft (bf data) {
+  if (data.now > 0) {
+    data.now -= 1;
+  }
+  return data;
 }
 
-int * moveLeft(int *now) {
-  now = now - 1;
-  return now;
+bf increment (bf data) {
+  data.dataArray[data.now] += 1;
+  return data;
+}
+bf decrement (bf data) {
+  if (data.dataArray[data.now] > 0) {
+    data.dataArray[data.now] -= 1;
+  }
+  return data;
 }
 
-int * increment(int *now) {
-  printf("%d\n", *now);
-  *now = *now + 1;
-  return now;
+bf print (bf data) {
+  printf("%d", data.dataArray[data.now]);
+  return data;
 }
-
-int * decrement(int *now) {
-  *now = *now - 1;
-  return now;
-}
-
-int * loop(int *now) {
-}
-
-int * print(int *now) {
-  printf("%d\n", *now);
-}
-
-int * read(int *now) {
+bf read (bf data) {
   char c;
   scanf("%c", &c);
-  *now = (int) c;
 
-  return now;
+  data.dataArray[data.now] = (int) c;
+  return data;
 }
 
-int * doIt (char string[], int charId, int * now) {
-  char charNow = string[charId];
+sbf loop (sbf s) {
+  int beg = s.index;
+  int end = 0;
+  bf data = s.data;
 
-  switch (charNow) {
-    case '+':
-      now = increment(now);
-      break;
-    case '-':
-      now = decrement(now);
-      break;
-    case '>':
-      now = moveRight(now);
-      break;
-    case '<':
-      now = moveLeft(now);
-      break;
-    case '.':
-      now = print(now);
-      break;
-    case ',':
-      now = read(now);
-      break;
-    default:
-      break;
+  int hasIn = 0;
+  int i;
+  for (i = beg + 1; i < CHAR_LENGHT; i++) {
+    char ch = data.charArray[i];
+
+    if (ch == '[') {
+      hasIn += 1;
+    } else if (ch == ']') {
+      if (hasIn == 0) {
+        end = i;
+        break;
+      } else {
+        hasIn -= 1;
+      }
+    }
   }
 
-  return now;
+  while (data.dataArray[data.now] > 0) {
+    int i2;
+    for (i2 = beg + 1; i2 < end; i2++) {
+      char ch = data.charArray[i2];
+      i2 = doIt(ch, i2, s).index;
+    }
+  }
+
+  return s;
+}
+
+sbf doIt (char ch, int index, sbf s) {
+  switch (ch) {
+      case '+':
+        s.data = increment(s.data);
+        return s;
+      case '-':
+        s.data = decrement(s.data);
+        return s;
+      case '>':
+        s.data = moveRight(s.data);
+        return s;
+      case '<':
+        s.data = moveLeft(s.data);
+        return s;
+      case '.':
+        s.data = print(s.data);
+        return s;
+      case '[':
+        return loop(s);
+      default:
+        return s;
+    }
+}
+
+void brainfuck (char * string) {
+
+  int i;
+  sbf s;
+
+  strcpy(s.data.charArray, string);
+
+  printf("%s", s.data.charArray);
+
+  for (i = 0; i < CHAR_LENGHT; i++) {
+    char ch = string[i];
+
+    i = doIt(ch, i, s).index;
+  }
 }
 
 int main (int argc, char *argv[]) {
-
-  char string[] = ".++.>.";
-
-  int stringLength = sizeof(string) / sizeof(char);
-
-  int dataArray[30000];
-
-  int * now = dataArray;
-
-  int charId;
-  for (charId = 0; charId < stringLength; charId++) {
-    char ch = string[charId];
-    printf("%d\n", *now);
-    now = doIt(string, charId, now);
-  }
+  char * string = "++++++++[ > ++++[ > ++ > +++ > +++ > + < < < < -] > + > + >->> +[ < ] < -] >>.> ---.+++++++..+++.>>.<-.<.+++.------.--------.>> +.> ++.";
+  printf("%s\n", string);
 }
