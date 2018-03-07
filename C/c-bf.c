@@ -38,7 +38,7 @@ bf decrement (bf data) {
 }
 
 bf print (bf data) {
-  printf("%d", data.dataArray[data.now]);
+  printf("%c", data.dataArray[data.now]);
   return data;
 }
 bf read (bf data) {
@@ -50,15 +50,14 @@ bf read (bf data) {
 }
 
 sbf loop (sbf s) {
-  int beg = s.index;
+  int beg = s.index + 1;
   int end = 0;
   int len = strlen(s.data.charArray);
 
-  int hasIn = 0;
-  int i;
-  for (i = beg + 1; i < len; i++) {
-    char ch = s.data.charArray[i];
 
+  int hasIn = 0;
+  for (int i = beg + 1; i < len; i++) {
+    char ch = s.data.charArray[i];
     if (ch == '[') {
       hasIn++;
     } else if (ch == ']') {
@@ -71,13 +70,13 @@ sbf loop (sbf s) {
     }
   }
 
+
   while (s.data.dataArray[s.data.now] > 0) {
-    int i2;
-    for (i2 = beg + 1; i2 < end; i2++) {
-      char ch = s.data.charArray[i2];
+    for (int i = beg + 1; i < end; i++) {
+      char ch = s.data.charArray[i];
       
-      s = doIt(ch, i2, s);
-      i2 = s.index;
+      s = doIt(ch, i, s);
+      i = s.index;
     }
   }
 
@@ -124,10 +123,10 @@ void brainfuck (char * string) {
 
   strcpy(s.data.charArray, string);
 
-  printf("%s", s.data.charArray);
-  
 
-  for (i = 0; i < strlen(string); i++) {
+  int len = strlen(string);
+
+   for (i = 0; i < len; i++) {
     char ch = s.data.charArray[i];
 
     s = doIt(ch, i, s);
