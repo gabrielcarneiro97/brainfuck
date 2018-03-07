@@ -65,26 +65,26 @@ class Brainfuck:
   def do (self, char, index):
     if char == '+':
       self.increment()
-      return 0
+      return index
     elif char == '-':
       self.decrement()
-      return 0
+      return index
     elif char == '>':
       self.moveRight()
-      return 0
+      return index
     elif char == '<':
       self.moveLeft()
-      return 0
+      return index
     elif char == '.':
       self.print()
-      return 0
+      return index
     elif char == ',':
       self.read()
-      return 0      
+      return index
     elif char == '[':
       return self.loop(index)
     else:
-      return 0
+      return index
 
 b = Brainfuck('++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.')
 
