@@ -1,5 +1,5 @@
 # brainfuck
-Interpretadores de brainfuck em algumas linguagens legais e Js que é uma merda.
+Interpretadores de brainfuck em várias linguagens, a forma de implementação é bem parecida em todas as linguagens.
 
 ## Python
 Já tá tudo implementado e **funcionando**.
@@ -8,7 +8,7 @@ Já tá tudo implementado e **funcionando**.
 Já tá tudo implementado e **funcionando**.
 
 ## JS
-Já tá tudo implementado, menos a função de leitura que vai dar um pouco mais de trabalho.
+Falta a função de leitura.
 
 ## C
-Os loops ainda não estão implementados, tá tudo bugado, Deus me livre.
+Falta parar de dar SegFault :(.
