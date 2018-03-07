@@ -7,6 +7,9 @@ Já tá tudo implementado e **funcionando**.
 ## GO
 Já tá tudo implementado e **funcionando**.
 
+## Ruby
+Já tá tudo implementado e **funcionando**.
+
 ## JS
 Falta a função de leitura.
 
