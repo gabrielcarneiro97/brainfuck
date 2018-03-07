@@ -16,23 +16,23 @@ typedef struct s1 {
 sbf doIt (char ch, int index, sbf s);
 
 bf moveRight (bf data) {
-  data.now += 1;
+  data.now++;
   return data;
 }
 bf moveLeft (bf data) {
   if (data.now > 0) {
-    data.now -= 1;
+    data.now--;
   }
   return data;
 }
 
 bf increment (bf data) {
-  data.dataArray[data.now] += 1;
+  data.dataArray[data.now]++;
   return data;
 }
 bf decrement (bf data) {
   if (data.dataArray[data.now] > 0) {
-    data.dataArray[data.now] -= 1;
+    data.dataArray[data.now]--;
   }
   return data;
 }
@@ -52,20 +52,21 @@ bf read (bf data) {
 sbf loop (sbf s) {
   int beg = s.index;
   int end = 0;
+  int len = strlen(s.data.charArray);
 
   int hasIn = 0;
   int i;
-  for (i = beg + 1; i < strlen(s.data.charArray); i++) {
+  for (i = beg + 1; i < len; i++) {
     char ch = s.data.charArray[i];
 
     if (ch == '[') {
-      hasIn += 1;
+      hasIn++;
     } else if (ch == ']') {
       if (hasIn == 0) {
         end = i;
         break;
       } else {
-        hasIn -= 1;
+        hasIn--;
       }
     }
   }
@@ -137,6 +138,5 @@ void brainfuck (char * string) {
 
 int main (int argc, char *argv[]) {
   char string[] = "+++[>++++<-]>.";
-
   brainfuck(string);
 }
