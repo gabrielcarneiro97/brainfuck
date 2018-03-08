@@ -1,6 +1,9 @@
 # brainfuck
 Interpretadores de brainfuck em várias linguagens, a forma de implementação é bem parecida em todas as linguagens.
 
+## RUST
+Já tá tudo implementado e **funcionando**.
+
 ## Python
 Já tá tudo implementado e **funcionando**.
 
