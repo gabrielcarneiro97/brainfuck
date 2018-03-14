@@ -136,6 +136,6 @@ void brainfuck (char * string) {
 }
 
 int main (int argc, char *argv[]) {
-  char string[] = "+++[>++++<-]>.";
+  char string[] = "+++>++++[>>++++[>+++<<-]<-]>>.>.";
   brainfuck(string);
 }
