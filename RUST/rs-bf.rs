@@ -17,8 +17,9 @@ impl Brainfuck {
 
     fn exec (&mut self) {
         let chars = self.string.clone();
-
         let mut nxt = 0;
+
+
         for (i, _) in chars.chars().enumerate() {
             
             if i == nxt {
@@ -30,6 +31,7 @@ impl Brainfuck {
     fn move_right (&mut self) {
         self.now += 1;
     }
+
     fn move_left (&mut self) {
         if self.now > 0 {
             self.now -= 1;
@@ -39,6 +41,7 @@ impl Brainfuck {
     fn increment (&mut self) {
         self.data_array[self.now] += 1;
     }
+
     fn decrement (&mut self) {
         if self.data_array[self.now] > 0 {
             self.data_array[self.now] -= 1;
@@ -86,7 +89,6 @@ impl Brainfuck {
         };
 
         while self.data_array[self.now] > 0 {
-
             let mut nxt = beg + 1;
 
             for (i, _) in chars.chars().enumerate() {
