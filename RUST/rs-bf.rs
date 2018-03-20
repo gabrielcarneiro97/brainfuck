@@ -3,7 +3,7 @@ use std::io;
 struct Brainfuck {
     now : usize,
     string : String,
-    data_array : [usize;30000],
+    data_array : [usize; 30000],
 }
 
 impl Brainfuck {
@@ -11,7 +11,7 @@ impl Brainfuck {
         Brainfuck {
             now: 0,
             string: string.to_string(),
-            data_array: [0;30000],
+            data_array: [0; 30000],
         }
     }
 
@@ -19,9 +19,7 @@ impl Brainfuck {
         let chars = self.string.clone();
         let mut nxt = 0;
 
-
         for (i, _) in chars.chars().enumerate() {
-            
             if i == nxt {
                 nxt = self.do_it(nxt);
             }
@@ -105,7 +103,7 @@ impl Brainfuck {
 
     fn do_it (&mut self, index : usize) -> usize {
 
-        let c = String::from(&self.string[index..index+1]);
+        let c = String::from(&self.string[index..index + 1]);
 
         let c = match c.chars().next() {
             Some(c) => c as char,
